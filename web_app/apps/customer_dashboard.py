@@ -15,6 +15,8 @@ COLORS = {
     'text': '#77d1d6',
 }
 
+MONTHS = ['August', 'September', 'October', 'November', 'December', 'January']
+
 customer_id = 1
 
 
@@ -22,13 +24,24 @@ def get_three_values():
     a = np.random.randint(100, 500)
     b = np.random.randint(100, 500)
     c = np.random.randint(100, 500)
-    return [a, b, c]
+    d = np.random.randint(100, 500)
+    e = np.random.randint(100, 500)
+    f = np.random.randint(100, 500)
+    return [a, b, c, d, e, f]
 
 
 def get_extended_values(value):
-    a = np.random.randint(100, 500)
-    b = np.random.randint(100, 500)
-    return [a, b, value]
+    operation = np.random.randint(0, 2)
+    extended_values = []
+    if operation:
+        for i in range(6):
+            i = np.random.randint(0, 100)
+            extended_values.append(i + value)
+    else:
+        for i in range(6):
+            i = np.random.randint(0, 100)
+            extended_values.append(value - i)
+    return extended_values
 
 
 def get_random_segment():
@@ -40,9 +53,14 @@ def generate_arpu_graph(customer):
     return {
         'data': [
             {
-                'x': ['June', 'July', 'August'],
+                'x': MONTHS,
                 'y': get_extended_values(df.iloc[customer]['ARPU']),
-                'type': 'bar'
+                'type': 'bar',
+                'marker': {
+                    'color': '#63b7af',
+                    'size': 10,
+                },
+                'width': [0.5] * 6,
             },
         ],
         'layout': {
@@ -66,27 +84,30 @@ def generate_service_usage_graph(customer):
     return {
         'data': [
             {
-                'x': ['June', 'July', 'August'],
+                'x': MONTHS,
                 'y': get_extended_values(df.iloc[customer]['Internet Usage']),
                 'name': 'Internet Usage',
                 'marker': {
-                    'color': 'rgb(55, 83, 109)'
+                    'color': '#ff9d76',
+                    'size': 10,
                 }
             },
             {
-                'x': ['June', 'July', 'August'],
+                'x': MONTHS,
                 'y': get_extended_values(df.iloc[customer]['Voice Usage']),
                 'name': 'Voice Usage',
                 'marker': {
-                    'color': 'rgb(26, 118, 255)'
+                    'color': '#a3f7bf',
+                    'size': 10,
                 }
             },
             {
-                'x': ['June', 'July', 'August'],
+                'x': MONTHS,
                 'y': get_extended_values(df.iloc[customer]['SMS Usage']),
                 'name': 'SMS Usage',
                 'marker': {
-                    'color': 'rgb(26, 200, 55)'
+                    'color': '#05dfd7',
+                    'size': 10,
                 }
             }
         ],
@@ -102,7 +123,7 @@ def generate_service_usage_graph(customer):
             'paper_bgcolor': COLORS['background'],
             'font': {
                 'color': COLORS['text']
-            }
+            },
         }
     }
 
@@ -140,8 +161,20 @@ layout = html.Div([
 
         html.Div([
             html.P([
-                html.Strong('Customer ID: '),
-                html.Strong('1', id='display-customer-id'),
+                html.Strong('Customer ID :  ', className='info-title'),
+                html.Strong('1', id='display-customer-id', className='info-value'),
+            ], className='text-customer-id'),
+            html.P([
+                html.Strong('Location :  ', className='info-title'),
+                html.Strong('Mumbai', className='info-value'),
+            ], className='text-customer-id'),
+            html.P([
+                html.Strong('Age :  ', className='info-title'),
+                html.Strong('40-45', className='info-value'),
+            ], className='text-customer-id'),
+            html.P([
+                html.Strong('Gender :  ', className='info-title'),
+                html.Strong('M', className='info-value'),
             ], className='text-customer-id'),
         ], className='six columns container', id='customer-info')
     ], className='container'),
@@ -175,9 +208,8 @@ layout = html.Div([
                 ], id='customer-segment')
             ], className='six columns', id='display-customer-segment')
         ], className='container'),
-
-        # dcc.Link('Go to App 2', href='/apps/overall_dashboard')
-    ], id='last-div')
+    ], id='last-div'),
+    # dcc.Link('Go to App 2', href='/apps/overall_dashboard')
 ])
 
 
