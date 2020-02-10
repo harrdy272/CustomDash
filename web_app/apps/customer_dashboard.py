@@ -5,6 +5,7 @@ import plotly.graph_objs as go
 import dash_daq as daq
 
 from web_app.app import app
+from web_app.apps.helpers.helper_functions import get_extended_values, get_random_city, get_random_gender, get_random_age, get_random_segment
 
 import pandas as pd
 import numpy as np
@@ -15,38 +16,8 @@ COLORS = {
     'text': '#77d1d6',
 }
 
-MONTHS = ['August', 'September', 'October', 'November', 'December', 'January']
-
 customer_id = 1
-
-
-def get_three_values():
-    a = np.random.randint(100, 500)
-    b = np.random.randint(100, 500)
-    c = np.random.randint(100, 500)
-    d = np.random.randint(100, 500)
-    e = np.random.randint(100, 500)
-    f = np.random.randint(100, 500)
-    return [a, b, c, d, e, f]
-
-
-def get_extended_values(value):
-    operation = np.random.randint(0, 2)
-    extended_values = []
-    if operation:
-        for i in range(6):
-            i = np.random.randint(0, 100)
-            extended_values.append(i + value)
-    else:
-        for i in range(6):
-            i = np.random.randint(0, 100)
-            extended_values.append(value - i)
-    return extended_values
-
-
-def get_random_segment():
-    segments = ['Travel', 'Food', 'Banking', 'War', 'Lifestyle', 'Hacking']
-    return segments[np.random.randint(0, 5)]
+MONTHS = ['August', 'September', 'October', 'November', 'December', 'January']
 
 
 def generate_arpu_graph(customer):
@@ -60,7 +31,7 @@ def generate_arpu_graph(customer):
                     'color': '#63b7af',
                     'size': 10,
                 },
-                'width': [0.5] * 6,
+                'width': [0.4] * 6,
             },
         ],
         'layout': {
@@ -75,6 +46,12 @@ def generate_arpu_graph(customer):
             'paper_bgcolor': COLORS['background'],
             'font': {
                 'color': COLORS['text']
+            },
+            'transition': {
+                'duration': 1500
+            },
+            'yaxis': {
+                'range': [0, 1000]
             },
         }
     }
@@ -124,6 +101,12 @@ def generate_service_usage_graph(customer):
             'font': {
                 'color': COLORS['text']
             },
+            'transition': {
+                'duration': 1500
+            },
+            'yaxis': {
+                'range': [0, 1000]
+            },
         }
     }
 
@@ -166,15 +149,15 @@ layout = html.Div([
             ], className='text-customer-id'),
             html.P([
                 html.Strong('Location :  ', className='info-title'),
-                html.Strong('Mumbai', className='info-value'),
+                html.Strong('Mumbai', className='info-value', id='location'),
             ], className='text-customer-id'),
             html.P([
                 html.Strong('Age :  ', className='info-title'),
-                html.Strong('40-45', className='info-value'),
+                html.Strong('40-45', className='info-value', id='age'),
             ], className='text-customer-id'),
             html.P([
                 html.Strong('Gender :  ', className='info-title'),
-                html.Strong('M', className='info-value'),
+                html.Strong('M', className='info-value', id='gender'),
             ], className='text-customer-id'),
         ], className='six columns container', id='customer-info')
     ], className='container'),
@@ -214,12 +197,15 @@ layout = html.Div([
 
 
 @app.callback(
-    Output('display-customer-id', 'children'),
+    [Output('display-customer-id', 'children'),
+     Output('location', 'children'),
+     Output('age', 'children'),
+     Output('gender', 'children')],
     [Input('submit-button', 'n_clicks')],
     [State('customer-id', 'value')],
 )
 def update_customer_id(n_clicks, value):
-    return value
+    return value, get_random_city(), get_random_age(), get_random_gender()
 
 
 @app.callback(
