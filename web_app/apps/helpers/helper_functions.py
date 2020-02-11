@@ -1,24 +1,19 @@
 import numpy as np
+import pandas as pd
+
+df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plotting.csv")
 
 
-def get_random_city():
-    cities = ['Mumbai', 'Delhi', 'Jaipur', 'Pune', 'Chennai',
-              'Bangalore', 'Mysore', 'Chandigarh', 'Jodhpur']
-    r = np.random.randint(0, 10)
-    return cities[r]
+def get_location(customer):
+    return df.iloc[customer]['Location']
 
 
-def get_random_gender():
-    gender = ['M', 'F']
-    r = np.random.randint(0, 2)
-    return gender[r]
+def get_gender(customer):
+    return df.iloc[customer]['Gender']
 
 
-def get_random_age():
-    age = ['20-25', '25-30', '30-35', '35-40', '40-45',
-           '45-50', '50-55', '55-60', '60-65', '65-70']
-    r = np.random.randint(0, 10)
-    return age[r]
+def get_age(customer):
+    return df.iloc[customer]['Age']
 
 
 def get_extended_values(value):
@@ -35,6 +30,9 @@ def get_extended_values(value):
     return extended_values
 
 
-def get_random_segment():
-    segments = ['Travel', 'Food', 'Banking', 'War', 'Lifestyle', 'Hacking']
-    return segments[np.random.randint(0, 5)]
+def get_segment(customer):
+    return df.iloc[customer]['Customer Segment']
+
+
+def get_churn(customer):
+    return str(df.iloc[customer]['Churn']) + "%"
