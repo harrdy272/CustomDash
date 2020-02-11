@@ -1,15 +1,16 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-import plotly.graph_objs as go
-import dash_daq as daq
 
 from web_app.app import app
-from web_app.apps.helpers.helper_functions import get_extended_values, get_random_city, get_random_gender, get_random_age, get_random_segment
+from web_app.apps.helpers.helper_functions import get_extended_values, get_location, get_gender, \
+                                                  get_age, get_segment, get_churn
 
 import pandas as pd
-import numpy as np
-from random import random
+
+df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plotting.csv")
+
+COLUMNS = list(df.columns)
 
 COLORS = {
     'background': '#28283c',
@@ -111,11 +112,10 @@ def generate_service_usage_graph(customer):
     }
 
 
-def generate_churn_probability(prob):
-    random_prob = np.random.randint(0, 100)
+def generate_churn_probability(customer):
     return html.Div(
         id='churn-probability',
-        children=str(random_prob) + "%"
+        children=str(df.iloc[customer]['Churn']) + "%"
     )
 
 
@@ -187,12 +187,18 @@ layout = html.Div([
             html.Div([
                 html.Strong('CUSTOMER SEGMENT', className='titles'),
                 html.Div([
-                    get_random_segment()
+                    get_segment(customer_id)
                 ], id='customer-segment')
             ], className='six columns', id='display-customer-segment')
         ], className='container'),
     ], id='last-div'),
-    # dcc.Link('Go to App 2', href='/apps/overall_dashboard')
+
+    html.Div([
+        html.Button([
+            dcc.Link('OVERALL DASHBOARD', href='/apps/overall_dashboard')
+        ], id='page2-link', className='two columns'),
+    ], className='container', id='page2-link-container')
+
 ])
 
 
@@ -205,7 +211,7 @@ layout = html.Div([
     [State('customer-id', 'value')],
 )
 def update_customer_id(n_clicks, value):
-    return value, get_random_city(), get_random_age(), get_random_gender()
+    return value, get_location(value), get_age(value), get_gender(value)
 
 
 @app.callback(
@@ -232,7 +238,7 @@ def update_arpu_graph(n_clicks, value):
     [State('customer-id', 'value')]
 )
 def update_churn_probability(n_clicks, value):
-    return str(np.random.randint(0, 100)) + "%"
+    return get_churn(value)
 
 
 @app.callback(
@@ -241,4 +247,4 @@ def update_churn_probability(n_clicks, value):
     [State('customer-id', 'value')]
 )
 def update_customer_segment(n_clicks, value):
-    return get_random_segment()
+    return get_segment(value)
