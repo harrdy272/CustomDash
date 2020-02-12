@@ -3,7 +3,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 from web_app.app import app
 import pandas as pd
-from web_app.apps.helpers.helper_functions import get_tweets
+from web_app.apps.helpers.helper_functions import get_tweets, get_polarity
 
 df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plotting.csv")
 
@@ -128,7 +128,7 @@ def generate_pie_chart():
     return {
         'data': [
             {
-                'values': [40, 60],
+                'values': get_polarity(),
                 'type': 'pie',
                 'labels': ['Negative', 'Positive'],
                 'hoverinfo': 'label+percent',

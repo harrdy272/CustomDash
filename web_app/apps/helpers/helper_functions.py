@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import dash_html_components as html
 import random
+from textblob import TextBlob
 
 df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plotting.csv")
 tweets_df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\Tweets.csv")
@@ -55,3 +56,15 @@ def get_tweets():
         html.P(d, className='tweet'),
         html.P(e, className='tweet'),
     ])
+
+
+def get_polarity():
+    n, p = 0, 0
+    for tweet in tweets:
+        blob = TextBlob(tweet)
+        polarity = blob.sentiment[0]
+        if polarity < 0:
+            n += 1
+        else:
+            p += 1
+    return [n, p]
