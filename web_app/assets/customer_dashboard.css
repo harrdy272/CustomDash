@@ -141,6 +141,7 @@ a {
   color: #77d1d6;
   padding-left: 7.5px;
   margin-top: 15px;
+  height: 519px;
 }
 
 #tweet-polarity-display {
@@ -153,13 +154,13 @@ a {
   align-content: center;
   text-align: center;
   color: #77d1d6;
-  height: 574px;
+  /* height: 574px; */
   margin-top: 15px;
 }
 
 .tweet {
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px;
   padding-left: 20px;
   margin: 0px;
@@ -172,6 +173,8 @@ a {
   padding: 20px;
   margin: 20px;
   border-radius: 10px;
+  margin-top: 50px;
+  height: 390px;
 }
 
 #crossfilter-yaxis-column,
@@ -184,4 +187,21 @@ a {
 .xaxis,
 .yaxis {
   background-color: #1e1e2a;
+}
+
+#tweet-title {
+  margin-left: 24px;
+  float: left;
+}
+
+#refresh-button {
+  font-family: Poppins;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  float: right;
+  border-radius: 10px;
+  padding: 0;
+  margin-right: 20px;
+  color: #77d1d6;
 }
