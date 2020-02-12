@@ -1,8 +1,9 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from web_app.app import app
 import pandas as pd
+from web_app.apps.helpers.helper_functions import get_tweets
 
 df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plotting.csv")
 
@@ -209,13 +210,14 @@ layout = html.Div([
     html.Div([
         html.Div([
             html.Div([
-                html.Strong('TWEETS', className='titles'),
                 html.Div([
-                    html.P(TWEET, className='tweet'),
-                    html.P(TWEET, className='tweet'),
-                    html.P(TWEET, className='tweet'),
-                    html.P(TWEET, className='tweet'),
-                    html.P(TWEET, className='tweet'),
+                    html.Strong('LIVE TWEETS', id='tweet-title', className='titles', style={'float': 'left'}),
+                    html.Button([
+                        'REFRESH'
+                    ], id='refresh-button', className='two columns'),
+                ]),
+                html.Div([
+                    get_tweets()
                 ], id='tweet-container')
             ], className='eight columns', id='tweet-display'),
             html.Div([
@@ -248,3 +250,12 @@ layout = html.Div([
 )
 def update_scatter_plot(xaxis_column, yaxis_column, xaxis_type, yaxis_type):
     return generate_scatter_plot(xaxis_column, yaxis_column, xaxis_type, yaxis_type)
+
+
+@app.callback(
+    Output('tweet-container', 'children'),
+    [Input('refresh-button', 'n_clicks')],
+    # [State('customer-id', 'value')]
+)
+def service_usage_graph(n_clicks):
+    return get_tweets()
