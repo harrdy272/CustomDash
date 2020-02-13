@@ -3,10 +3,11 @@ import pandas as pd
 import dash_html_components as html
 import random
 from textblob import TextBlob
+import regex as re
 
 df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plotting.csv")
-tweets_df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\Tweets.csv")
-tweets = list(tweets_df['text'])
+tweets_df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\vodafoneidea_tweets.csv")
+tweets = list(tweets_df['tweet'])
 
 
 def get_location(customer):
@@ -44,11 +45,11 @@ def get_churn(customer):
 
 
 def get_tweets():
-    a = random.choice(tweets)
-    b = random.choice(tweets)
-    c = random.choice(tweets)
-    d = random.choice(tweets)
-    e = random.choice(tweets)
+    a = re.sub(r"http\S+", "", random.choice(tweets))
+    b = re.sub(r"http\S+", "", random.choice(tweets))
+    c = re.sub(r"http\S+", "", random.choice(tweets))
+    d = re.sub(r"http\S+", "", random.choice(tweets))
+    e = re.sub(r"http\S+", "", random.choice(tweets))
     return html.Div([
         html.P(a, className='tweet'),
         html.P(b, className='tweet'),
@@ -59,12 +60,14 @@ def get_tweets():
 
 
 def get_polarity():
-    n, p = 0, 0
+    n, p, neu = 0, 0, 0
     for tweet in tweets:
         blob = TextBlob(tweet)
         polarity = blob.sentiment[0]
         if polarity < 0:
             n += 1
-        else:
+        elif polarity > 0:
             p += 1
-    return [n, p]
+        else:
+            neu += 1
+    return [n, p, neu]
