@@ -130,7 +130,7 @@ def generate_pie_chart():
             {
                 'values': get_polarity(),
                 'type': 'pie',
-                'labels': ['Negative', 'Positive'],
+                'labels': ['Negative', 'Positive', 'Neutral'],
                 'hoverinfo': 'label+percent',
                 'marker': {
                     'colors': ['#ff9d76', '#00adb5']
@@ -154,7 +154,7 @@ layout = html.Div([
             html.H3(
                 html.Strong(
                     '''
-                    OVERALL DASHBOARD
+                    ANALYTICS DASHBOARD
                     ''', id='customdash'),
             ),
         ], className='one-half column'),
@@ -234,7 +234,7 @@ layout = html.Div([
 
     html.Div([
         html.Button([
-            dcc.Link('CUSTOMER DASHBOARD', href='/apps/customer_dashboard')
+            dcc.Link('PREDICTION DASHBOARD', href='/apps/customer_dashboard')
         ], id='page2-link', className='three columns'),
     ], className='container', id='page2-link-container')
 

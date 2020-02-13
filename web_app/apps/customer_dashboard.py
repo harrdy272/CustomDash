@@ -195,8 +195,8 @@ layout = html.Div([
 
     html.Div([
         html.Button([
-            dcc.Link('OVERALL DASHBOARD', href='/apps/overall_dashboard')
-        ], id='page2-link', className='two columns'),
+            dcc.Link('ANALYTICS DASHBOARD', href='/apps/overall_dashboard')
+        ], id='page2-link', className='three columns'),
     ], className='container', id='page2-link-container')
 
 ])
