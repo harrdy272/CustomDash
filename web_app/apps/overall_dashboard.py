@@ -10,7 +10,8 @@ df = pd.read_csv(r"D:\Events\VIL Codefest\CustomDash\web_app\appdata\sample_plot
 COLUMNS = ['ARPU', 'Internet Usage', 'SMS Usage', 'Voice Usage']
 
 COLORS = {
-    'background': '#28283c',
+    'background': '#1e1e2a',
+    'figure-background': '#28283c',
     'text': '#77d1d6',
 }
 
